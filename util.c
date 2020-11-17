@@ -107,7 +107,8 @@ errorwin1(Rune *dir, int ndir, Rune **incl, int nincl)
 		runemove(r, incl[i], n);
 		winaddincl(w, r, n);
 	}
-	w->autoindent = globalautoindent;
+	for(i=0; i<NINDENT; i++)
+		w->indent[i] = globalindent[i];
 	return w;
 }
 
@@ -132,7 +133,7 @@ errorwin(Mntdir *md, int owner)
 }
 
 /*
- * Incoming window should be locked. 
+ * Incoming window should be locked.
  * It will be unlocked and returned window
  * will be locked in its place.
  */
@@ -189,7 +190,7 @@ void
 addwarningtext(Mntdir *md, Rune *r, int nr)
 {
 	Warning *warn;
-	
+
 	for(warn = warnings; warn; warn=warn->next){
 		if(warn->md == md){
 			bufinsert(&warn->buf, warn->buf.nc, r, nr);
