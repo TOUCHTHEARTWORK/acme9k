@@ -1,0 +1,23 @@
+TabWidth: 2
+IndentWidth: 2
+ContinuationIndentWidth: 2
+UseTab: Never
+AllowShortBlocksOnASingleLine: Always
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortEnumsOnASingleLine: true
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+AlwaysBreakAfterDefinitionReturnType: None
+PenaltyReturnTypeOnItsOwnLine: 255
+IndentCaseLabels: true
+SpaceBeforeParens: ControlStatements
+AlignAfterOpenBracket: AlwaysBreak
+BinPackArguments: false
+BinPackArguments: false
+PointerAlignment: Left
+BreakBeforeBraces: Attach
+SortIncludes: false
+AllowAllArgumentsOnNextLine: false
+AllowAllParametersOfDeclarationOnNextLine: false
+AlignEscapedNewlines: Left
+
