@@ -254,6 +254,8 @@ void warning(Mntdir* md, char* s, ...) {
 int runeeq(Rune* s1, uint n1, Rune* s2, uint n2) {
   if (n1 != n2)
     return FALSE;
+  if (n1 == 0)
+    return TRUE;
   return memcmp(s1, s2, n1 * sizeof(Rune)) == 0;
 }
 

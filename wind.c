@@ -106,18 +106,15 @@ void windrawbutton(Window* w) {
 }
 
 int delrunepos(Window* w) {
-  int n;
-  Rune rune;
+  Rune* r;
+  int i;
 
-  for (n = 0; n < w->tag.file->b.nc; n++) {
-    bufread(&w->tag.file->b, n, &rune, 1);
-    if (rune == ' ')
-      break;
-  }
-  n += 2;
-  if (n >= w->tag.file->b.nc)
+  r = parsetag(w, 0, &i);
+  free(r);
+  i += 2;
+  if (i >= w->tag.file->b.nc)
     return -1;
-  return n;
+  return i;
 }
 
 void movetodel(Window* w) {
@@ -390,7 +387,7 @@ void wincleartag(Window* w) {
 
   /* w must be committed */
   n = w->tag.file->b.nc;
-  r = parsetag(w, &i);
+  r = parsetag(w, 0, &i);
   for (; i < n; i++)
     if (r[i] == '|')
       break;
@@ -407,15 +404,15 @@ void wincleartag(Window* w) {
   textsetselect(&w->tag, w->tag.q0, w->tag.q1);
 }
 
-Rune* parsetag(Window* w, int* len) {
+Rune* parsetag(Window* w, int extra, int* len) {
   static Rune Ldelsnarf[] =
     {' ', 'D', 'e', 'l', ' ', 'S', 'n', 'a', 'r', 'f', 0};
   static Rune Lspacepipe[] = {' ', '|', 0};
-  static Rune Ltabpipe[] = {' ', '|', 0};
+  static Rune Ltabpipe[] = {'\t', '|', 0};
   int i;
   Rune *r, *p, *pipe;
 
-  r = runemalloc(w->tag.file->b.nc + 1);
+  r = runemalloc(w->tag.file->b.nc + extra + 1);
   bufread(&w->tag.file->b, 0, r, w->tag.file->b.nc);
   r[w->tag.file->b.nc] = '\0';
 
@@ -460,7 +457,7 @@ void winsettag1(Window* w) {
   if (w->tag.ncache != 0 || w->tag.file->mod)
     wincommit(w, &w->tag); /* check file name; also guarantees we can modify tag
                               contents */
-  old = parsetag(w, &i);
+  old = parsetag(w, 0, &i);
   if (runeeq(old, i, w->body.file->name, w->body.file->nname) == FALSE) {
     textdelete(&w->tag, 0, i, TRUE);
     textinsert(&w->tag, 0, w->body.file->name, w->body.file->nname, TRUE);
@@ -473,7 +470,8 @@ void winsettag1(Window* w) {
   /* compute the text for the whole tag, replacing current only if it differs */
   new = runemalloc(w->body.file->nname + 100);
   i = 0;
-  runemove(new + i, w->body.file->name, w->body.file->nname);
+  if (w->body.file->nname != 0)
+    runemove(new, w->body.file->name, w->body.file->nname);
   i += w->body.file->nname;
   runemove(new + i, Ldelsnarf, 10);
   i += 10;
@@ -577,7 +575,7 @@ void wincommit(Window* w, Text* t) {
       textcommit(f->text[i], FALSE); /* no-op for t */
   if (t->what == Body)
     return;
-  r = parsetag(w, &i);
+  r = parsetag(w, 0, &i);
   if (runeeq(r, i, w->body.file->name, w->body.file->nname) == FALSE) {
     seq++;
     filemark(w->body.file);
