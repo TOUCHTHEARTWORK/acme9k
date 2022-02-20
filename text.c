@@ -33,10 +33,23 @@ void textinit(Text* t, File* f, Rectangle r, Reffont* rf, Image* cols[NCOL]) {
   t->reffont = rf;
   t->tabstop = maxtab;
   memmove(t->fr.cols, cols, sizeof t->fr.cols);
-  textredraw(t, r, rf->f, screen, -1);
+  textredraw(t, r, rf->f, screen, -1, 0);
 }
 
-void textredraw(Text* t, Rectangle r, Font* f, Image* b, int odx) {
+void textdrawactive(Text* t, int active) {
+  Image* b;
+  Rectangle br;
+
+  b = t->fr.cols[BACK];
+  if (active)
+    b = t->fr.cols[HIGH];
+  br.min = t->scrollr.max;
+  br.max.x = br.min.x + 1;
+  br.max.y = br.min.y + Dy(t->all);
+  draw(screen, br, b, nil, b->r.min);
+}
+
+void textredraw(Text* t, Rectangle r, Font* f, Image* b, int odx, int active) {
   int maxt;
   Rectangle rr;
 
@@ -64,6 +77,7 @@ void textredraw(Text* t, Rectangle r, Font* f, Image* b, int odx) {
     textfill(t);
     textsetselect(t, t->q0, t->q1);
   }
+  /*textdrawactive(t, active);*/
 }
 
 int textresize(Text* t, Rectangle r, int keepextra) {
@@ -80,7 +94,7 @@ int textresize(Text* t, Rectangle r, int keepextra) {
   t->lastsr = nullrect;
   r.min.x += Scrollwid + Scrollgap;
   frclear(&t->fr, 0);
-  textredraw(t, r, t->fr.font, t->fr.b, odx);
+  textredraw(t, r, t->fr.font, t->fr.b, odx, 0);
   if (keepextra && t->fr.r.max.y < t->all.max.y && !t->fr.noredraw) {
     /* draw background in bottom fringe of window */
     r.min.x -= Scrollgap;

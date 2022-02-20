@@ -15,6 +15,9 @@
 #include <bio.h>
 #include "edit.h"
 
+/* configuration file */
+#include "config.h"
+
 void mousethread(void*);
 void keyboardthread(void*);
 void waitthread(void*);
@@ -37,9 +40,7 @@ enum {
 };
 Rune snarfrune[NSnarf + 1];
 
-char* fontnames[2] = {
-  "/lib/font/bit/lucsans/typeunicode.7.font",
-  "/lib/font/bit/lucm/unicode.9.font"};
+char* fontnames[2] = {PRIMARY_FONT, SECONDARY_FONT};
 
 Command* command;
 
@@ -53,13 +54,14 @@ void derror(Display* d, char* errorstr) {
   error(errorstr);
 }
 
+// we need to share this btw mainthread and mousethread
+
 void threadmain(int argc, char* argv[]) {
   int i;
   char *p, *loadfile;
-  Column* c;
-  int ncol;
   Display* d;
-
+  int ncol;
+  Column* c;
   rfork(RFENVG | RFNAMEG);
 
   ncol = -1;
@@ -71,10 +73,10 @@ void threadmain(int argc, char* argv[]) {
       _threaddebuglevel = ~0;
     } break;
     case 'a':
-      globalindent[AUTOINDENT] = TRUE;
+      globalindent[AUTOINDENT] = !AUTOINDENT_DEFAULT;
       break;
     case 'b':
-      bartflag = TRUE;
+      bartflag = !CLICKFOCUS_DEFAULT;
       break;
     case 'c':
       p = ARGF();
@@ -95,7 +97,7 @@ void threadmain(int argc, char* argv[]) {
         goto Usage;
       break;
     case 'i':
-      globalindent[SPACESINDENT] = TRUE;
+      globalindent[SPACESINDENT] = !TABSTOSPACES_DEFAULT;
       break;
     case 'l':
       loadfile = ARGF();
@@ -501,6 +503,7 @@ void mousethread(void* v) {
   char* act;
   enum { MResize, MMouse, MPlumb, MWarnings, NMALT };
   static Alt alts[NMALT + 1];
+  int click;
 
   USED(v);
   threadsetname("mousethread");
@@ -521,6 +524,7 @@ void mousethread(void* v) {
   alts[NMALT].op = CHANEND;
 
   for (;;) {
+    click = 0;
     qlock(&row.lk);
     flushwarnings();
     qunlock(&row.lk);
@@ -532,7 +536,7 @@ void mousethread(void* v) {
         draw(
           screen,
           screen->r,
-          allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, 0x222222FF),
+          allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_EMPTY),
           nil,
           ZP);
         iconinit();
@@ -630,8 +634,10 @@ void mousethread(void* v) {
           goto Continue;
         }
         if (m.buttons) {
-          if (w)
+          if (w) {
+            click = 1;
             winlock(w, 'M');
+          }
           t->eq0 = ~0;
           if (w)
             wincommit(w, t);
@@ -647,6 +653,7 @@ void mousethread(void* v) {
               activecol = t->col; /* button 1 only */
             if (t->w != nil && t == &t->w->body)
               activewin = t->w;
+
           } else if (m.buttons & 2) {
             if (textselect2(t, &q0, &q1, &argt))
               execute(t, q0, q1, FALSE, argt);
@@ -659,6 +666,10 @@ void mousethread(void* v) {
           goto Continue;
         }
       Continue:
+        /*if (click && w) {
+          /* draw hilighted border around active window
+          windrawideco(w, w->col->row->col, w->col->row->ncol);
+        }*/
         qunlock(&row.lk);
         break;
     }
@@ -968,34 +979,36 @@ Cursor2 boxcursor2 = {
    0xFF, 0xFF, 0xFC, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}};
 
 void iconinit(void) {
-  Rectangle r;
+  Rectangle r, r1;
   Image* tmp;
 
   if (tagcols[BACK] == nil) {
     /* Black */
     tagcols[BACK] =
-      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, DBlack);
+      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_TAG_BG);
     tagcols[HIGH] =
-      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, 0x1F9B92FF);
+      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_TAG_HI);
     tagcols[BORD] =
-      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, 0x797979FF);
+      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_TAG_BD);
     tagcols[TEXT] =
-      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, 0x797979FF);
-    tagcols[HTEXT] = display->black;
+      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_TAG_TX);
+    tagcols[HTEXT] =
+      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_TAG_HT);
 
     /* Blue */
     textcols[BACK] =
-      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, 0x000F19FF);
+      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_BODY_BG);
     textcols[HIGH] =
-      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, 0x1F9B92FF);
+      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_BODY_HI);
     textcols[BORD] =
-      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, 0x93A1A1FF);
+      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_BODY_BD);
     textcols[TEXT] =
-      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, 0x93A1A1FF);
-    textcols[HTEXT] = display->black;
+      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_BODY_TX);
+    textcols[HTEXT] =
+      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_BODY_HT);
   }
 
-  r = Rect(0, 0, Scrollwid + ButtonBorder, font->height + 1);
+  r = Rect(0, 0, Scrollwid, font->height + 1);
   if (button && eqrect(r, button->r))
     return;
 
@@ -1007,24 +1020,22 @@ void iconinit(void) {
 
   button = allocimage(display, r, screen->chan, 0, DNofill);
   draw(button, r, tagcols[BACK], nil, r.min);
-  r.max.x -= ButtonBorder;
   border(button, r, ButtonBorder, tagcols[BORD], ZP);
 
   r = button->r;
   modbutton = allocimage(display, r, screen->chan, 0, DNofill);
   draw(modbutton, r, tagcols[BACK], nil, r.min);
-  r.max.x -= ButtonBorder;
   border(modbutton, r, ButtonBorder, tagcols[BORD], ZP);
   r = insetrect(r, ButtonBorder);
-  tmp = allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, 0x09998DFF);
+  tmp = allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_BTN_MD);
   draw(modbutton, r, tmp, nil, ZP);
   freeimage(tmp);
 
   r = button->r;
-  colbutton = allocimage(display, r, screen->chan, 0, 0x586E75FF);
+  colbutton = allocimage(display, r, screen->chan, 0, COLOR_BTN_CO);
 
-  but2col = allocimage(display, r, screen->chan, 1, 0x797979FF);
-  but3col = allocimage(display, r, screen->chan, 1, 0x36D3C6FF);
+  but2col = allocimage(display, r, screen->chan, 1, COLOR_B2_HI);
+  but3col = allocimage(display, r, screen->chan, 1, COLOR_B3_HI);
 }
 
 /*

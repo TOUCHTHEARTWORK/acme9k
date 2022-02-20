@@ -89,6 +89,35 @@ void wininit(Window* w, Window* clone, Rectangle r) {
   }
 }
 
+void windrawideco(Window* active, Column** allcols, int ncol) {
+  Window* wptr;
+  Column* cptr;
+  int wcnt, ccnt;
+
+  for (ccnt = 0; ccnt < ncol; ccnt++) {
+    cptr = allcols[ccnt];
+    for (wcnt = 0; wcnt < cptr->nw; wcnt++) {
+      wptr = cptr->w[wcnt];
+      winlock(wptr, 'M');
+      textredraw(
+        &wptr->tag,
+        wptr->tag.scrollr,
+        wptr->tag.fr.font,
+        screen,
+        -1,
+        wptr->id == active->id);
+      textredraw(
+        &wptr->body,
+        wptr->body.scrollr,
+        wptr->body.fr.font,
+        screen,
+        -1,
+        wptr->id == active->id);
+      winunlock(wptr);
+    }
+  }
+}
+
 /*
  * Draw the appropriate button.
  */
@@ -573,8 +602,10 @@ void wincommit(Window* w, Text* t) {
   if (f->ntext > 1)
     for (i = 0; i < f->ntext; i++)
       textcommit(f->text[i], FALSE); /* no-op for t */
-  if (t->what == Body)
+  if (t->what == Body) {
+    winresize(w, w->r, TRUE, TRUE);
     return;
+  }
   r = parsetag(w, 0, &i);
   if (runeeq(r, i, w->body.file->name, w->body.file->nname) == FALSE) {
     seq++;

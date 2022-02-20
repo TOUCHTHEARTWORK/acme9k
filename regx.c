@@ -60,22 +60,22 @@ static Rangeset sempty;
  *	0x10000xx are operators, value == precedence
  *	0x20000xx are tokens, i.e. operands for operators
  */
-#define OPERATOR 0x1000000 /* Bit set in all operators */
+#define OPERATOR 0x1000000   /* Bit set in all operators */
 #define START (OPERATOR + 0) /* Start, used for marker on stack */
-#define RBRA (OPERATOR + 1) /* Right bracket, ) */
-#define LBRA (OPERATOR + 2) /* Left bracket, ( */
-#define OR (OPERATOR + 3) /* Alternation, | */
-#define CAT (OPERATOR + 4) /* Concatentation, implicit operator */
-#define STAR (OPERATOR + 5) /* Closure, * */
-#define PLUS (OPERATOR + 6) /* a+ == aa* */
+#define RBRA (OPERATOR + 1)  /* Right bracket, ) */
+#define LBRA (OPERATOR + 2)  /* Left bracket, ( */
+#define OR (OPERATOR + 3)    /* Alternation, | */
+#define CAT (OPERATOR + 4)   /* Concatentation, implicit operator */
+#define STAR (OPERATOR + 5)  /* Closure, * */
+#define PLUS (OPERATOR + 6)  /* a+ == aa* */
 #define QUEST (OPERATOR + 7) /* a? == a|nothing, i.e. 0 or 1 a's */
-#define ANY 0x2000000 /* Any character but newline, . */
-#define NOP (ANY + 1) /* No operation, internal use only */
-#define BOL (ANY + 2) /* Beginning of line, ^ */
-#define EOL (ANY + 3) /* End of line, $ */
-#define CCLASS (ANY + 4) /* Character class, [] */
-#define NCCLASS (ANY + 5) /* Negated character class, [^] */
-#define END (ANY + 0x77) /* Terminate: match found */
+#define ANY 0x2000000        /* Any character but newline, . */
+#define NOP (ANY + 1)        /* No operation, internal use only */
+#define BOL (ANY + 2)        /* Beginning of line, ^ */
+#define EOL (ANY + 3)        /* End of line, $ */
+#define CCLASS (ANY + 4)     /* Character class, [] */
+#define NCCLASS (ANY + 5)    /* Negated character class, [^] */
+#define END (ANY + 0x77)     /* Terminate: match found */
 
 #define ISATOR OPERATOR
 #define ISAND ANY
@@ -104,8 +104,8 @@ int backwards;
 int nbra;
 Rune* exprp;      /* pointer to next character in source expression */
 #define DCLASS 10 /* allocation increment */
-int nclass; /* number active */
-int Nclass; /* high water mark */
+int nclass;       /* number active */
+int Nclass;       /* high water mark */
 Rune** class;
 int negateclass;
 

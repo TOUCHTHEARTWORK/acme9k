@@ -215,7 +215,7 @@ void		textinit(Text*, File*, Rectangle, Reffont*, Image**);
 void		textinsert(Text*, uint, Rune*, uint, int);
 int		textload(Text*, uint, char*, int);
 Rune		textreadc(Text*, uint);
-void		textredraw(Text*, Rectangle, Font*, Image*, int);
+void		textredraw(Text*, Rectangle, Font*, Image*, int, int);
 void		textreset(Text*);
 int		textresize(Text*, Rectangle, int);
 void		textscrdraw(Text*);
@@ -304,6 +304,7 @@ void	winmousebut(Window*);
 void	winaddincl(Window*, Rune*, int);
 void	wincleartag(Window*);
 char	*winctlprint(Window*, char*, int);
+void windrawideco(Window*, Column**, int);
 
 struct Column
 {

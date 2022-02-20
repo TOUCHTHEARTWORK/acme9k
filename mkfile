@@ -1,9 +1,10 @@
 <$PLAN9/src/mkhdr
 
 TARG=acme
-DIRS=mail
+DIRS=mail libframe
 
 OFILES=\
+  libframe/frinit.$O\
 	acme.$O\
 	addr.$O\
 	buff.$O\
@@ -34,6 +35,8 @@ HFILES=dat.h\
 <$PLAN9/src/mkdirs
 
 edit.$O ecmd.$O elog.$O:	edit.h
+
+LDFLAGS=-L./libframe -lframe $LDFLAGS
 
 likeplan9:V:
 	mkdir -p likeplan9

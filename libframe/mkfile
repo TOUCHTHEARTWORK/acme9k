@@ -1,0 +1,37 @@
+<$PLAN9/src/mkhdr
+
+LIB=libframe.a
+
+OFILES=\
+	frbox.$O\
+	frdelete.$O\
+	frdraw.$O\
+	frinit.$O\
+	frinsert.$O\
+	frptofchar.$O\
+	frselect.$O\
+	frstr.$O\
+	frutil.$O\
+
+HFILES=\
+	$PLAN9/include/frame.h\
+	$PLAN9/include/draw.h\
+
+default:V:	./$LIB
+
+# ./$LIB:	$OFILES
+# 	$AR rsc ./$LIB $newprereq
+
+./$LIB(%):N: %
+./$LIB:	${OFILES:%=./$LIB(%)}
+	$AR rsc ./$LIB $newmember
+
+&:n:	&.$O
+	$AR rsc ./$LIB $stem.$O
+
+all install:V: ./$LIB
+
+NUKEFILES=$NUKEFILES ./$LIB
+
+<$PLAN9/src/mkcommon
+
