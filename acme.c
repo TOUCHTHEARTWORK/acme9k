@@ -9,6 +9,7 @@
 #include <fcall.h>
 #include <plumb.h>
 #include <libsec.h>
+#include <stdio.h>
 #include "dat.h"
 #include "fns.h"
 /* for generating syms in mkfile only: */
@@ -41,6 +42,8 @@ enum {
 Rune snarfrune[NSnarf + 1];
 
 char* fontnames[2] = {PRIMARY_FONT, SECONDARY_FONT};
+
+char version[] = "acme9k v9001-a01";
 
 Command* command;
 
@@ -116,6 +119,10 @@ void threadmain(int argc, char* argv[]) {
       winsize = ARGF();
       if (winsize == nil)
         goto Usage;
+      break;
+    case 'v':
+      fprintf(stdout, "%s\n", version);
+      exit(0);
       break;
     default:
     Usage:
@@ -983,7 +990,7 @@ void iconinit(void) {
   Image* tmp;
 
   if (tagcols[BACK] == nil) {
-    /* Black */
+    /* TAG */
     tagcols[BACK] =
       allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_TAG_BG);
     tagcols[HIGH] =
@@ -995,7 +1002,7 @@ void iconinit(void) {
     tagcols[HTEXT] =
       allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_TAG_HT);
 
-    /* Blue */
+    /* BODY */
     textcols[BACK] =
       allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_BODY_BG);
     textcols[HIGH] =
