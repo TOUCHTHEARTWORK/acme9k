@@ -43,7 +43,7 @@ Rune snarfrune[NSnarf + 1];
 
 char* fontnames[2] = {PRIMARY_FONT, SECONDARY_FONT};
 
-char version[] = "acme9k v9001-a02";
+char version[] = "acme9k v9001-a03";
 
 Command* command;
 
@@ -512,7 +512,6 @@ void mousethread(void* v) {
   static Alt alts[NMALT + 1];
 
   /* make sure we don't recklessly refresh the ticks */
-  int click;
   Text* oldbarttext;
 
   USED(v);
@@ -534,7 +533,6 @@ void mousethread(void* v) {
   alts[NMALT].op = CHANEND;
 
   for (;;) {
-    click = 0;
     qlock(&row.lk);
     flushwarnings();
     qunlock(&row.lk);
@@ -646,7 +644,6 @@ void mousethread(void* v) {
         }
         if (m.buttons) {
           if (w) {
-            click = 1;
             winlock(w, 'M');
           }
           t->eq0 = ~0;
@@ -679,7 +676,7 @@ void mousethread(void* v) {
         }
       Continue:
         /* won't refresh ticks if scrolling didn't change the active frame! */
-        if (oldbarttext != barttext && (m.buttons & (8 | 16) || click) && t) {
+        if (oldbarttext != barttext && (m.buttons) && t) {
           textsettick(t, t->row);
         }
         qunlock(&row.lk);
