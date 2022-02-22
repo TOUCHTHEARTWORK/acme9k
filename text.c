@@ -5,7 +5,7 @@
 #include <cursor.h>
 #include <mouse.h>
 #include <keyboard.h>
-#include <frame.h>
+#include "libframe/frame.h"
 #include <fcall.h>
 #include <plumb.h>
 #include <libsec.h>
@@ -36,17 +36,39 @@ void textinit(Text* t, File* f, Rectangle r, Reffont* rf, Image* cols[NCOL]) {
   textredraw(t, r, rf->f, screen, -1, 0);
 }
 
-void textdrawactive(Text* t, int active) {
-  Image* b;
-  Rectangle br;
+void _textsettick(Text* current, Text* self) {
+  self->fr.currenttick =
+    (self == current) ? self->fr.activetick : self->fr.tick;
+}
 
-  b = t->fr.cols[BACK];
-  if (active)
-    b = t->fr.cols[HIGH];
-  br.min = t->scrollr.max;
-  br.max.x = br.min.x + 1;
-  br.max.y = br.min.y + Dy(t->all);
-  draw(screen, br, b, nil, b->r.min);
+void textsettick(Text* t, Row* r) {
+  Column** allcolumns;
+  Column* cptr;
+  Window* wptr;
+  int ncols, ccnt, wcnt;
+
+  if (!bartflag)
+    return;
+
+  allcolumns = r->col;
+  ncols = r->ncol;
+
+  _textsettick(t, &r->tag);
+  for (ccnt = 0; ccnt < ncols; ccnt++) {
+    cptr = allcolumns[ccnt];
+    _textsettick(t, &cptr->tag);
+    for (wcnt = 0; wcnt < cptr->nw; wcnt++) {
+      wptr = cptr->w[wcnt];
+      winlock(wptr, 'M');
+      _textsettick(t, &wptr->tag);
+      _textsettick(t, &wptr->body);
+      winunlock(wptr);
+    }
+  }
+  /* force redraw to refresh all ticks;
+   * kind of expensive, but we only do it when the active frame changes
+   */
+  rowresize(r, r->r);
 }
 
 void textredraw(Text* t, Rectangle r, Font* f, Image* b, int odx, int active) {
@@ -77,7 +99,6 @@ void textredraw(Text* t, Rectangle r, Font* f, Image* b, int odx, int active) {
     textfill(t);
     textsetselect(t, t->q0, t->q1);
   }
-  /*textdrawactive(t, active);*/
 }
 
 int textresize(Text* t, Rectangle r, int keepextra) {

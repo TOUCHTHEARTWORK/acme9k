@@ -5,7 +5,7 @@
 #include <cursor.h>
 #include <mouse.h>
 #include <keyboard.h>
-#include <frame.h>
+#include "libframe/frame.h"
 #include <fcall.h>
 #include <bio.h>
 #include <plumb.h>

@@ -4,7 +4,15 @@ TARG=acme
 DIRS=mail libframe
 
 OFILES=\
+  libframe/frbox.$O\
+  libframe/frdelete.$O\
+  libframe/frdraw.$O\
   libframe/frinit.$O\
+  libframe/frinsert.$O\
+  libframe/frptofchar.$O\
+  libframe/frselect.$O\
+  libframe/frstr.$O\
+  libframe/frutil.$O\
 	acme.$O\
 	addr.$O\
 	buff.$O\
@@ -27,7 +35,8 @@ OFILES=\
 	wind.$O\
 	xfid.$O\
 
-HFILES=dat.h\
+HFILES=libframe/frame.h\
+  dat.h\
 	edit.h\
 	fns.h\
 
@@ -36,7 +45,7 @@ HFILES=dat.h\
 
 edit.$O ecmd.$O elog.$O:	edit.h
 
-LDFLAGS=-L./libframe -lframe $LDFLAGS
+# LDFLAGS=-L./libframe -lframe $LDFLAGS
 
 likeplan9:V:
 	mkdir -p likeplan9

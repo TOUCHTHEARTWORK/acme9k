@@ -2,7 +2,7 @@
 #include <libc.h>
 #include <draw.h>
 #include <mouse.h>
-#include <frame.h>
+#include "frame.h"
 
 int _frcanfit(Frame* f, Point pt, Frbox* b) {
   int left, w, nr;

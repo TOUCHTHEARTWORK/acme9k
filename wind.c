@@ -5,7 +5,7 @@
 #include <cursor.h>
 #include <mouse.h>
 #include <keyboard.h>
-#include <frame.h>
+#include "libframe/frame.h"
 #include <fcall.h>
 #include <plumb.h>
 #include <libsec.h>
@@ -86,35 +86,6 @@ void wininit(Window* w, Window* clone, Rectangle r) {
       w->indent[i] = clone->indent[i];
     textsetselect(&w->body, clone->body.q0, clone->body.q1);
     winsettag(w);
-  }
-}
-
-void windrawideco(Window* active, Column** allcols, int ncol) {
-  Window* wptr;
-  Column* cptr;
-  int wcnt, ccnt;
-
-  for (ccnt = 0; ccnt < ncol; ccnt++) {
-    cptr = allcols[ccnt];
-    for (wcnt = 0; wcnt < cptr->nw; wcnt++) {
-      wptr = cptr->w[wcnt];
-      winlock(wptr, 'M');
-      textredraw(
-        &wptr->tag,
-        wptr->tag.scrollr,
-        wptr->tag.fr.font,
-        screen,
-        -1,
-        wptr->id == active->id);
-      textredraw(
-        &wptr->body,
-        wptr->body.scrollr,
-        wptr->body.fr.font,
-        screen,
-        -1,
-        wptr->id == active->id);
-      winunlock(wptr);
-    }
   }
 }
 

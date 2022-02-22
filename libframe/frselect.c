@@ -2,7 +2,7 @@
 #include <libc.h>
 #include <draw.h>
 #include <mouse.h>
-#include <frame.h>
+#include "frame.h"
 
 static int region(int a, int b) {
   if (a < b)

@@ -2,7 +2,7 @@
 #include <libc.h>
 #include <draw.h>
 #include <mouse.h>
-#include <frame.h>
+#include "frame.h"
 
 Point _frptofcharptb(Frame* f, ulong p, Point pt, int bn) {
   uchar* s;

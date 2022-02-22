@@ -228,7 +228,7 @@ void		textsetorigin(Text*, uint, int);
 void		textsetselect(Text*, uint, uint);
 void		textshow(Text*, uint, uint, int);
 void		texttype(Text*, Rune);
-
+void textsettick(Text*, Row*);
 
 enum
 {
@@ -304,7 +304,6 @@ void	winmousebut(Window*);
 void	winaddincl(Window*, Rune*, int);
 void	wincleartag(Window*);
 char	*winctlprint(Window*, char*, int);
-void windrawideco(Window*, Column**, int);
 
 struct Column
 {

@@ -5,7 +5,7 @@
 #include <cursor.h>
 #include <mouse.h>
 #include <keyboard.h>
-#include <frame.h>
+#include "libframe/frame.h"
 #include <fcall.h>
 #include <plumb.h>
 #include <libsec.h>
@@ -160,6 +160,7 @@ Window* coladd(Column* c, Window* w, Window* clone, int y) {
   /* near the button, but in the body */
   moveto(mousectl, addpt(w->tag.scrollr.max, Pt(3, 3)));
   barttext = &w->body;
+  textsettick(&w->body, c->row);
   return w;
 }
 
@@ -494,6 +495,7 @@ Pack:
   free(ny);
   c->safe = TRUE;
   winmousebut(w);
+  textsettick(&w->body, c->row);
 }
 
 void coldragwin(Column* c, Window* w, int but) {
@@ -581,6 +583,7 @@ Found:
   winresize(w, r, c->safe, TRUE);
   c->safe = TRUE;
   winmousebut(w);
+  textsettick(&w->body, c->row);
 }
 
 Text* colwhich(Column* c, Point p) {

@@ -2,7 +2,7 @@
 #include <libc.h>
 #include <draw.h>
 #include <mouse.h>
-#include <frame.h>
+#include "frame.h"
 
 void frinit(Frame* f, Rectangle r, Font* ft, Image* b, Image* cols[NCOL]) {
   f->font = ft;
@@ -42,6 +42,16 @@ void frinittick(Frame* f) {
     DWhite);
   if (f->tick == nil)
     return;
+  if (f->activetick)
+    freeimage(f->activetick);
+  f->activetick = allocimage(
+    f->display,
+    Rect(0, 0, f->tickscale * FRTICKW, ft->height),
+    b->chan,
+    0,
+    DWhite);
+  if (f->activetick == nil)
+    return;
   if (f->tickback)
     freeimage(f->tickback);
   f->tickback = allocimage(f->display, f->tick->r, b->chan, 0, DWhite);
@@ -50,9 +60,9 @@ void frinittick(Frame* f) {
     f->tick = 0;
     return;
   }
-  /* background color */
+  /* inactive background color */
   draw(f->tick, f->tick->r, f->cols[BACK], nil, ZP);
-  /* vertical line */
+  /* inactive vertical line */
   draw(
     f->tick,
     Rect(
@@ -63,7 +73,7 @@ void frinittick(Frame* f) {
     f->cols[TEXT],
     nil,
     ZP);
-  /* box on each end */
+  /* inactive box on each end */
   draw(
     f->tick,
     Rect(0, 0, f->tickscale * FRTICKW, f->tickscale * FRTICKW),
@@ -80,6 +90,39 @@ void frinittick(Frame* f) {
     f->cols[TEXT],
     nil,
     ZP);
+
+  /* active background color */
+  draw(f->activetick, f->activetick->r, f->cols[BACK], nil, ZP);
+  /* active vertical line */
+  draw(
+    f->activetick,
+    Rect(
+      f->tickscale * (FRTICKW / 2),
+      0,
+      f->tickscale * (FRTICKW / 2 + 1),
+      ft->height),
+    f->cols[HIGH],
+    nil,
+    ZP);
+  /* active box on each end */
+  draw(
+    f->activetick,
+    Rect(0, 0, f->tickscale * FRTICKW, f->tickscale * FRTICKW),
+    f->cols[HIGH],
+    nil,
+    ZP);
+  draw(
+    f->activetick,
+    Rect(
+      0,
+      ft->height - f->tickscale * FRTICKW,
+      f->tickscale * FRTICKW,
+      ft->height),
+    f->cols[HIGH],
+    nil,
+    ZP);
+
+  f->currenttick = f->tick;
 }
 
 void frsetrects(Frame* f, Rectangle r, Image* b) {
@@ -96,8 +139,10 @@ void frclear(Frame* f, int freeall) {
   if (f->box)
     free(f->box);
   if (freeall) {
+    freeimage(f->activetick);
     freeimage(f->tick);
     freeimage(f->tickback);
+    f->currenttick = nil;
     f->tick = 0;
     f->tickback = 0;
   }

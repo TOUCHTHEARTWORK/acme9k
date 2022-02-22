@@ -2,7 +2,7 @@
 #include <libc.h>
 #include <draw.h>
 #include <mouse.h>
-#include <frame.h>
+#include "frame.h"
 
 void _frdrawtext(Frame* f, Point pt, Image* text, Image* back) {
   Frbox* b;
@@ -136,7 +136,7 @@ void frredraw(Frame* f) {
 static void _frtick(Frame* f, Point pt, int ticked) {
   Rectangle r;
 
-  if (f->ticked == ticked || f->tick == 0 || !ptinrect(pt, f->r))
+  if (f->ticked == ticked || f->currenttick == 0 || !ptinrect(pt, f->r))
     return;
   pt.x -= f->tickscale; /* looks best just left of where requested */
   r = Rect(pt.x, pt.y, pt.x + FRTICKW * f->tickscale, pt.y + f->font->height);
@@ -145,7 +145,7 @@ static void _frtick(Frame* f, Point pt, int ticked) {
     r.max.x = f->r.max.x;
   if (ticked) {
     draw(f->tickback, f->tickback->r, f->b, nil, pt);
-    draw(f->b, r, f->tick, nil, ZP);
+    draw(f->b, r, f->currenttick, nil, ZP);
   } else
     draw(f->b, r, f->tickback, nil, ZP);
   f->ticked = ticked;

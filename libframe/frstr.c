@@ -2,7 +2,7 @@
 #include <libc.h>
 #include <draw.h>
 #include <mouse.h>
-#include <frame.h>
+#include "frame.h"
 
 #define CHUNK 16
 #define ROUNDUP(n) ((n + CHUNK) & ~(CHUNK - 1))

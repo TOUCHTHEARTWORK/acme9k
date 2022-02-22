@@ -5,7 +5,7 @@
 #include <cursor.h>
 #include <mouse.h>
 #include <keyboard.h>
-#include <frame.h>
+#include "libframe/frame.h"
 #include <fcall.h>
 #include <plumb.h>
 #include <libsec.h>
@@ -43,7 +43,7 @@ Rune snarfrune[NSnarf + 1];
 
 char* fontnames[2] = {PRIMARY_FONT, SECONDARY_FONT};
 
-char version[] = "acme9k v9001-a01";
+char version[] = "acme9k v9001-a02";
 
 Command* command;
 
@@ -510,7 +510,10 @@ void mousethread(void* v) {
   char* act;
   enum { MResize, MMouse, MPlumb, MWarnings, NMALT };
   static Alt alts[NMALT + 1];
+
+  /* make sure we don't recklessly refresh the ticks */
   int click;
+  Text* oldbarttext;
 
   USED(v);
   threadsetname("mousethread");
@@ -598,6 +601,7 @@ void mousethread(void* v) {
           but = 2;
         else if (m.buttons == 4)
           but = 3;
+        oldbarttext = barttext;
         barttext = t;
         if (t->what == Body && ptinrect(m.xy, t->scrollr)) {
           if (but) {
@@ -668,15 +672,16 @@ void mousethread(void* v) {
             if (textselect3(t, &q0, &q1))
               look3(t, q0, q1, FALSE);
           }
+
           if (w)
             winunlock(w);
           goto Continue;
         }
       Continue:
-        /*if (click && w) {
-          /* draw hilighted border around active window
-          windrawideco(w, w->col->row->col, w->col->row->ncol);
-        }*/
+        /* won't refresh ticks if scrolling didn't change the active frame! */
+        if (oldbarttext != barttext && (m.buttons & (8 | 16) || click) && t) {
+          textsettick(t, t->row);
+        }
         qunlock(&row.lk);
         break;
     }

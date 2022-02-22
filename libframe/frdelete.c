@@ -2,7 +2,7 @@
 #include <libc.h>
 #include <draw.h>
 #include <mouse.h>
-#include <frame.h>
+#include "frame.h"
 
 int frdelete(Frame* f, ulong p0, ulong p1) {
   Point pt0, pt1, ppt0;

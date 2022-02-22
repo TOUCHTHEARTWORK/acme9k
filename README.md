@@ -2,6 +2,8 @@
 
 This is a fork of the `acme` text editor from the `plan9port` distribution. It combines the customizability of [lumar](https://github.com/lumar)/[sminez](https://github.com/sminez/plan9port)'s forks and [acme2k](https://github.com/karahobny/acme2k) with upstream fixes from [9fans](https://github.com/9fans/plan9port) and some custom work.
 
+Namely, when click-to-focus is enabled, the active window body or tag renders the tick (aka the text cursor) with the hilight color (`COLOR_<TAG|BODY>_HI`); otherwise the tick is rendered with the text color (`COLOR_<TAG|BODY>_TX`). This is all done with a fork of `libframe` which is included in the distribution and compiled into the program.
+
 See the `config.def.h` for out of the box customizations that can be done.
 
 [![screenshot](./scrot.png)](./scrot.png)
@@ -44,13 +46,14 @@ After building, run `./install.sh`; If run as a regular user, it will install to
 
 ## TODO
 
-* [ ] add an indicator of the active window when click to focus (`bartflag`) is enabled
+- [ ] allow active tick to be rendered for row/column tags, not just window body and tags
+- [ ] compile helpers
 
 ## thanks
 
-* [rob pike](https://github.com/robpike) author of the original acme for plan9
-* [russ cox](https://research.swtch.com) and the rest of the [9fans](https://github.com/9fans) for plan9port
-* [lumar](https://github.com/lumar) - looks like they deleted their github repos but I originally pulled my keybinds from there
-* [sminez](https://github.com/sminez) - possibly the original source of lumar's keybindings
-* [karahobny](https://github.com/karahobny) - creator of acme2k, a big inspiration for this project
-* [aksr](https://github.com/aksr) - source of the missing tag border pixel fix
+- [rob pike](https://github.com/robpike) author of the original acme for plan9
+- [russ cox](https://research.swtch.com) and the rest of the [9fans](https://github.com/9fans) for plan9port
+- [lumar](https://github.com/lumar) - looks like they deleted their github repos but I originally pulled my keybinds from there
+- [sminez](https://github.com/sminez) - possibly the original source of lumar's keybindings
+- [karahobny](https://github.com/karahobny) - creator of acme2k, a big inspiration for this project
+- [aksr](https://github.com/aksr) - source of the missing tag border pixel fix
