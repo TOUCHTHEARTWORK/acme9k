@@ -12,6 +12,7 @@
 #include <libsec.h>
 #include "dat.h"
 #include "fns.h"
+#include "config.h"
 
 static Rune Lcolhdr[] = {'N', 'e', 'w', 'c', 'o', 'l', ' ', 'K', 'i', 'l',
                          'l', ' ', 'P', 'u', 't', 'a', 'l', 'l', ' ', 'D',
@@ -24,7 +25,7 @@ void rowinit(Row* row, Rectangle r) {
   draw(
     screen,
     r,
-    allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, 0x222222FF),
+    allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_EMPTY),
     nil,
     ZP);
   row->r = r;
@@ -48,7 +49,7 @@ void rowinit(Row* row, Rectangle r) {
   draw(
     screen,
     r1,
-    allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, 0x222222FF),
+    allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_EMPTY),
     nil,
     ZP);
   textinsert(t, 0, Lcolhdr, 29, TRUE);
@@ -82,7 +83,7 @@ Column* rowadd(Row* row, Column* c, int x) {
     draw(
       screen,
       r,
-      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, 0x222222FF),
+      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_EMPTY),
       nil,
       ZP);
     r1 = r;
@@ -95,7 +96,7 @@ Column* rowadd(Row* row, Column* c, int x) {
     draw(
       screen,
       r1,
-      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, 0x222222FF),
+      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_EMPTY),
       nil,
       ZP);
     r.min.x = r1.max.x;
@@ -132,7 +133,7 @@ void rowresize(Row* row, Rectangle r) {
   draw(
     screen,
     r1,
-    allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, 0x222222FF),
+    allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_EMPTY),
     nil,
     ZP);
   r.min.y = r1.max.y;
@@ -152,7 +153,7 @@ void rowresize(Row* row, Rectangle r) {
       draw(
         screen,
         r2,
-        allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, 0x222222FF),
+        allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_EMPTY),
         nil,
         ZP);
       r1.min.x = r2.max.x;
@@ -218,7 +219,7 @@ Found:
   draw(
     screen,
     r,
-    allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, 0x222222FF),
+    allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_EMPTY),
     nil,
     ZP);
   r.max.x = p.x;
@@ -230,7 +231,7 @@ Found:
   draw(
     screen,
     r,
-    allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, 0x222222FF),
+    allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_EMPTY),
     nil,
     ZP);
   r.min.x = r.max.x;
@@ -258,7 +259,7 @@ Found:
     draw(
       screen,
       r,
-      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, 0x222222FF),
+      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_EMPTY),
       nil,
       ZP);
     return;
@@ -274,7 +275,7 @@ Found:
   draw(
     screen,
     r,
-    allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, 0x222222FF),
+    allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_EMPTY),
     nil,
     ZP);
   colresize(c, r);
@@ -633,7 +634,7 @@ int rowload(Row* row, char* file, int initing) {
       draw(
         screen,
         Rpt(r1.min, r2.max),
-        allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, 0x222222FF),
+        allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_EMPTY),
         nil,
         ZP);
       colresize(c1, r1);
@@ -643,7 +644,7 @@ int rowload(Row* row, char* file, int initing) {
       draw(
         screen,
         r2,
-        allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, 0x222222FF),
+        allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_EMPTY),
         nil,
         ZP);
     }

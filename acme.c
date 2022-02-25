@@ -43,7 +43,7 @@ Rune snarfrune[NSnarf + 1];
 
 char* fontnames[2] = {PRIMARY_FONT, SECONDARY_FONT};
 
-char version[] = "acme9k v9001-a03";
+char version[] = "acme9k v9001-a04";
 
 Command* command;
 
@@ -512,7 +512,7 @@ void mousethread(void* v) {
   static Alt alts[NMALT + 1];
 
   /* make sure we don't recklessly refresh the ticks */
-  Text* oldbarttext;
+  Text* oldbarttext = nil;
 
   USED(v);
   threadsetname("mousethread");
@@ -676,8 +676,11 @@ void mousethread(void* v) {
         }
       Continue:
         /* won't refresh ticks if scrolling didn't change the active frame! */
-        if (oldbarttext != barttext && (m.buttons) && t) {
-          textsettick(t, t->row);
+        if (
+          (oldbarttext != barttext && (m.buttons & (8 | 16)) ||
+           m.buttons & (1 | 2 | 4)) &&
+          t) {
+          textsettick(barttext, &row);
         }
         qunlock(&row.lk);
         break;
@@ -988,7 +991,7 @@ Cursor2 boxcursor2 = {
    0xFF, 0xFF, 0xFC, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}};
 
 void iconinit(void) {
-  Rectangle r, r1;
+  Rectangle r;
   Image* tmp;
 
   if (tagcols[BACK] == nil) {

@@ -1,0 +1,8 @@
+# Compiled Edit scripts
+
+[ Edit 1,$-1d ] # clear win
+[ Edit x/^[ ]*/ a/# / ] # comment (replace # with comment prefix)
+[ Edit x/^[ ]*# ?/ x/# ?/d ] # uncomment (replace # with comment prefix)
+[ Edit s/^[  ]//g ] # unindent
+[ Edit s/^/  /g ] # indent
+[ Edit x/[^\n]\n[^\n]/ s/\n/ / ] # join lines

@@ -1,0 +1,2 @@
+#!/bin/sh
+exec acme-lsp -server '(\.ts)|(\.js)|(\.jsx)|(\.tsx)$:typescript-language-server --stdio'

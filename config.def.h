@@ -25,7 +25,7 @@
 /* button colors: dirty file (mod) indicator and column handles */
 
 #define COLOR_BTN_MD 0x1F9B92FF
-#define COLOR_BTN_CO 0x586E75FF
+#define COLOR_BTN_CO 0x002B36FF
 
 /* button 2 and 3 selection colors */
 

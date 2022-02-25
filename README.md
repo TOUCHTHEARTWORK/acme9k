@@ -44,9 +44,29 @@ Users unfamiliar with `acme` in general should check the following resources:
 
 After building, run `./install.sh`; If run as a regular user, it will install to `~/bin/9`; if run as root, it will overwrite the systemwide `acme` in `$PLAN9/bin`
 
-## TODO
+## helpers
 
-- [ ] compile helpers
+The `scripts` directory contains some helpers, mostly just shortcuts for [acme-lsp](https://github.com/fhs/acme-lsp). Copy them to your `$PATH` and let 'em rip.
+
+Of particular interest:
+
+- `agols`: pass a colon-separated list of workspaces to start `acme-lsp` for go development
+- `atsls`: run without arguments to start `acme-lsp` for javascript/typescript development
+- `acls`: run without arguments to start `acme-lsp` for C/C++ development
+
+For `acls` to work right with plan9port C stuff you will need to add your `$PLAN9/include` directory to the compile flags in either the project `.clangd` file or your `~/.config/clangd/config.yaml`:
+
+```
+CompileFlags:
+  Add: 
+    - "-I/usr/lib/plan9/include"
+```
+
+See also:
+
+- [plumbing rules](https://nilfm.cc/git/dotfiles/tree/plumbing) - my plumbing rules, includes opening headers by right-click on the filename in an include directive
+
+The `Toolbox` file contains a compilation of `sam` command language (`Edit` scripts) that may be useful.
 
 ## thanks
 

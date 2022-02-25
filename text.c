@@ -59,10 +59,14 @@ void textsettick(Text* t, Row* r) {
     _textsettick(t, &cptr->tag);
     for (wcnt = 0; wcnt < cptr->nw; wcnt++) {
       wptr = cptr->w[wcnt];
-      winlock(wptr, 'M');
+      /*if (!wptr->isdir) {
+        winlock(wptr, 'M');
+      }*/
       _textsettick(t, &wptr->tag);
       _textsettick(t, &wptr->body);
-      winunlock(wptr);
+      /*if (!wptr->isdir) {
+        winunlock(wptr);
+      }*/
     }
   }
   /* force redraw to refresh all ticks;

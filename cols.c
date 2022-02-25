@@ -11,6 +11,7 @@
 #include <libsec.h>
 #include "dat.h"
 #include "fns.h"
+#include "config.h"
 
 static Rune Lheader[] = {'N', 'e', 'w', ' ', 'C', 'u', 't', ' ', 'P', 'a',
                          's', 't', 'e', ' ', 'S', 'n', 'a', 'r', 'f', ' ',
@@ -24,7 +25,7 @@ void colinit(Column* c, Rectangle r) {
   draw(
     screen,
     r,
-    allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, 0x222222FF),
+    allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_EMPTY),
     nil,
     ZP);
   c->r = r;
@@ -42,7 +43,7 @@ void colinit(Column* c, Rectangle r) {
   draw(
     screen,
     r1,
-    allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, 0x222222FF),
+    allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_EMPTY),
     nil,
     ZP);
   textinsert(t, 0, Lheader, 38, TRUE);
@@ -124,7 +125,7 @@ Window* coladd(Column* c, Window* w, Window* clone, int y) {
     draw(
       screen,
       r1,
-      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, 0x222222FF),
+      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_EMPTY),
       nil,
       ZP);
 
@@ -192,7 +193,7 @@ Found:
     draw(
       screen,
       r,
-      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, 0x222222FF),
+      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_EMPTY),
       nil,
       ZP);
     return;
@@ -253,7 +254,7 @@ void colresize(Column* c, Rectangle r) {
   draw(
     screen,
     r1,
-    allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, 0x222222FF),
+    allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_EMPTY),
     nil,
     ZP);
   r1.max.y = r.max.y;
@@ -274,7 +275,7 @@ void colresize(Column* c, Rectangle r) {
     draw(
       screen,
       r2,
-      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, 0x222222FF),
+      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_EMPTY),
       nil,
       ZP);
     r1.min.y = r2.max.y;
@@ -330,7 +331,7 @@ void colsort(Column* c) {
     draw(
       screen,
       r1,
-      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, 0x222222FF),
+      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_EMPTY),
       nil,
       ZP);
     r.min.y = r1.max.y;
@@ -431,7 +432,7 @@ Pack:
     draw(
       screen,
       r,
-      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, 0x222222FF),
+      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_EMPTY),
       nil,
       ZP);
     y1 = r.max.y;
@@ -463,7 +464,7 @@ Pack:
     draw(
       screen,
       r,
-      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, 0x222222FF),
+      allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_EMPTY),
       nil,
       ZP);
     for (j = i + 1; j < c->nw; j++)
@@ -485,7 +486,7 @@ Pack:
       draw(
         screen,
         r,
-        allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, 0x222222FF),
+        allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_EMPTY),
         nil,
         ZP);
       y1 = r.max.y;
@@ -572,7 +573,7 @@ Found:
   draw(
     screen,
     r,
-    allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, 0x222222FF),
+    allocimage(display, Rect(0, 0, 1, 1), screen->chan, 1, COLOR_EMPTY),
     nil,
     ZP);
   r.min.y = r.max.y;

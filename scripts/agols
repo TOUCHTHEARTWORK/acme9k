@@ -1,0 +1,2 @@
+#!/bin/sh
+exec acme-lsp -server '([/\\]go\.mod)|([/\\]go\.sum)|(\.go)$:gopls serve' -workspaces $@

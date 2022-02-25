@@ -845,10 +845,11 @@ Window* openfile(Text* t, Expand* e) {
   textshow(t, r.q0, r.q1, 1);
   winsettag(t->w);
   seltext = t;
-  if (e->jump)
+  if (e->jump) {
     moveto(
       mousectl,
       addpt(frptofchar(&t->fr, t->fr.p0), Pt(4, font->height - 4)));
+  }
   return w;
 }
 

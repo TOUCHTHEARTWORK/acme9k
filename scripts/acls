@@ -1,0 +1,3 @@
+#!/bin/sh
+export CFLAGS="-I${PLAN9}/include"
+exec acme-lsp -server '(\.c)|(\.h)|(\.cc)|(\.hh)|(\.cpp)|(\.hpp)$:clangd -log=error --background-index --limit-results=500 --completion-style=bundled'
