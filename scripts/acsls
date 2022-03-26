@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [ -z "$1" ]; then
+  :
+elif [ -z "$2" ]; then
+  workspaces="-workspaces $1"
+else
+  workspaces="-workspaces $2"
+  sln="--solution $1"
+fi
+
+exec acme-lsp --server "(\.cs)|(\.sln)|(\.csproj)$:csharp-ls ${sln}" ${workspaces}

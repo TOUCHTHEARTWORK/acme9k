@@ -240,7 +240,7 @@ void colmousebut(Column* c) {
 }
 
 void colresize(Column* c, Rectangle r) {
-  int i;
+  int i, old, new;
   Rectangle r1, r2;
   Window* w;
 
@@ -258,6 +258,8 @@ void colresize(Column* c, Rectangle r) {
     nil,
     ZP);
   r1.max.y = r.max.y;
+  new = Dy(r) - c->nw*(Border + font->height);
+  old = Dy(c->r) - c->nw * (Border + font->height);
   for (i = 0; i < c->nw; i++) {
     w = c->w[i];
     w->maxlines = 0;
@@ -265,8 +267,9 @@ void colresize(Column* c, Rectangle r) {
       r1.max.y = r.max.y;
     else {
       r1.max.y = r1.min.y;
-      if (Dy(c->r) != 0) {
-        r1.max.y += (Dy(w->r) + Border) * Dy(r) / Dy(c->r);
+      if (new > 0 && old > 0 && Dy(w->r) > font->height) {
+        r1.max.y +=
+          (Dy(w->r) - font->height) * new / old + Border + font->height;
       }
     }
     r1.max.y = max(r1.max.y, r1.min.y + Border + font->height);
@@ -428,7 +431,7 @@ Pack:
     if (nl[j])
       r.max.y += 1 + nl[j] * v->body.fr.font->height;
     r.min.y = winresize(v, r, c->safe, FALSE);
-    r.max.y += Border;
+    r.max.y += r.min.y + Border;
     draw(
       screen,
       r,

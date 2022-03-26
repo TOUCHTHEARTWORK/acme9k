@@ -38,7 +38,7 @@ void frselect(Frame* f, Mousectl* mc) /* when called, button 1 is down */
         p0 = f->p1;
         p1 = f->p0;
         scrled = 1;
-      } else if (mp.y > f->r.max.y) {
+      } else if (mp.y >= f->r.max.y - 1) {
         (*f->scroll)(f, (mp.y - f->r.max.y) / (int)f->font->height + 1);
         p0 = f->p0;
         p1 = f->p1;

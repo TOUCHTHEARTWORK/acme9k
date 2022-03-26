@@ -1,2 +1,7 @@
 #!/bin/sh
-exec acme-lsp -server '([/\\]go\.mod)|([/\\]go\.sum)|(\.go)$:gopls serve' -workspaces $@
+
+if [ ! -z "$1" ]; then
+  workspaces="-workspaces $1"
+fi
+
+exec acme-lsp -server '([/\\]go\.mod)|([/\\]go\.sum)|(\.go)$:gopls serve' ${workspaces}

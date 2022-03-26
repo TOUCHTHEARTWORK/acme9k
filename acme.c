@@ -43,7 +43,7 @@ Rune snarfrune[NSnarf + 1];
 
 char* fontnames[2] = {PRIMARY_FONT, SECONDARY_FONT};
 
-char version[] = "acme9k v9001-a04";
+char version[] = "acme9k v9001-a05";
 
 Command* command;
 
