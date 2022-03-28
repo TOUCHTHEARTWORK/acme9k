@@ -43,7 +43,7 @@ Rune snarfrune[NSnarf + 1];
 
 char* fontnames[2] = {PRIMARY_FONT, SECONDARY_FONT};
 
-char version[] = "acme9k v9001-a05";
+char version[] = "acme9k v9001-b01";
 
 Command* command;
 
@@ -56,8 +56,6 @@ void derror(Display* d, char* errorstr) {
   USED(d);
   error(errorstr);
 }
-
-// we need to share this btw mainthread and mousethread
 
 void threadmain(int argc, char* argv[]) {
   int i;

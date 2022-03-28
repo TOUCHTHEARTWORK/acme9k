@@ -574,7 +574,7 @@ void wincommit(Window* w, Text* t) {
     for (i = 0; i < f->ntext; i++)
       textcommit(f->text[i], FALSE); /* no-op for t */
   if (t->what == Body) {
-    winresize(w, w->r, TRUE, TRUE);
+    /* winresize(w, w->r, TRUE, TRUE); */
     return;
   }
   r = parsetag(w, 0, &i);

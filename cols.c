@@ -431,7 +431,7 @@ Pack:
     if (nl[j])
       r.max.y += 1 + nl[j] * v->body.fr.font->height;
     r.min.y = winresize(v, r, c->safe, FALSE);
-    r.max.y += r.min.y + Border;
+    r.max.y = r.min.y + Border;
     draw(
       screen,
       r,
