@@ -51,8 +51,9 @@ The `scripts` directory contains some helpers, mostly just shortcuts for [acme-l
 Of particular interest:
 
 - `agols`: pass a colon-separated list of workspaces to start `acme-lsp` for go development
-- `atsls`: run without arguments to start `acme-lsp` for javascript/typescript development
-- `acls`: run without arguments to start `acme-lsp` for C/C++ development
+- `atsls`: pass a colon-separated list of workspaces to start `acme-lsp` for javascript/typescript development
+- `acls`: pass a colon-separated list of workspaces to start `acme-lsp` for C/C++ development
+- `acsls`: pass a colon-separated list of workspaces to start `acme-lsp` for C# development
 
 For `acls` to work right with plan9port C stuff you will need to add your `$PLAN9/include` directory to the compile flags in either the project `.clangd` file or your `~/.config/clangd/config.yaml`:
 
@@ -61,6 +62,8 @@ CompileFlags:
   Add: 
     - "-I/usr/lib/plan9/include"
 ```
+
+The C# server doesn't seem to be able to handle metadata yet (eg, going to definitions that are part of the standard library or packages).
 
 See also:
 
@@ -76,3 +79,5 @@ The `Toolbox` file contains a compilation of `sam` command language (`Edit` scri
 - [sminez](https://github.com/sminez) - possibly the original source of lumar's keybindings
 - [karahobny](https://github.com/karahobny) - creator of acme2k, a big inspiration for this project
 - [aksr](https://github.com/aksr) - source of the missing tag border pixel fix
+- [chyvonomys](https://github.com/chyvonomys) - source of a few  bugfixes
+- [jxy](https://github.com/jxy) - source of the column drag window drift fix
