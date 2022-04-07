@@ -219,6 +219,7 @@ int winresize(Window* w, Rectangle r, int safe, int keepextra) {
   r1.min.y = y;
   if (!safe || !eqrect(w->body.all, r1)) {
     oy = y;
+
     if (y + 1 + w->body.fr.font->height <= r.max.y) { /* room for one line */
       r1.min.y = y;
       r1.max.y = y + 1;
@@ -227,6 +228,7 @@ int winresize(Window* w, Rectangle r, int safe, int keepextra) {
       r1.min.y = min(y, r.max.y);
       r1.max.y = r.max.y;
     } else {
+      draw(screen, r1, textcols[BACK], nil, ZP);
       r1.min.y = y;
       r1.max.y = y;
     }
