@@ -46,9 +46,17 @@ After building, run `./install.sh`; If run as a regular user, it will install to
 
 ## helpers
 
-The `scripts` directory contains some helpers, mostly just shortcuts for [acme-lsp](https://github.com/fhs/acme-lsp). Copy them to your `$PATH` and let 'em rip.
+The `scripts` directory contains some helpers, mostly just shortcuts for [acme-lsp](https://github.com/fhs/acme-lsp). Also shortcuts to change font size and a `Slide` utility (for presentations). Copy them to your `$PATH` and let 'em rip.
 
-Of particular interest:
+These work only in window tags (not column or row tags):
+
+- `F+`: increase font size
+- `F-`: decrease font size
+- `Slide+`: move to the next file in the current directory (alphabetical order)
+- `Slide-`: move to the previous file in the current directory (alphabetical order)
+- `Slide`: move to the named file in the current directory (called by the previous two)
+
+These will work anywhere:
 
 - `agols`: pass a colon-separated list of workspaces to start `acme-lsp` for go development
 - `atsls`: pass a colon-separated list of workspaces to start `acme-lsp` for javascript/typescript development
