@@ -3,6 +3,7 @@
 [ Edit 1,$-1d ] # clear win
 [ Edit x/^[ ]*/ a/# / ] # comment (replace # with comment prefix)
 [ Edit x/^[ ]*# ?/ x/# ?/d ] # uncomment (replace # with comment prefix)
-[ Edit s/^[ ][ ]//g ] # unindent
-[ Edit s/^/  /g ] # indent
+[ Edit s/^([ ][ ]|[\t]//g ] # unindent (2 spaces or tab)
+[ Edit s/^/  /g ] # indent 2 spaces
+[ Edit s/^/\t/g ] #indent tabs
 [ Edit x/[^\n]\n[^\n]/ s/\n/ / ] # join lines

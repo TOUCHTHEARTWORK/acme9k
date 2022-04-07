@@ -1,0 +1,17 @@
+#!/bin/sh
+
+tagdata=$(9p read acme/${winid}/tag)
+set -- ${tagdata}
+path=$1
+slide=$(basename ${path})
+IFS='
+'
+
+for s in *; do
+  if [ "${s}" != "${slide}" ]; then
+    newslide=${s}
+  else
+    Slide ${newslide}
+    break;
+  fi
+done

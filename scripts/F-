@@ -1,0 +1,16 @@
+#!/bin/sh
+
+nx=1
+if [ ! -z "$1" ]; then
+	nx=$1
+fi
+
+ctl=$(9p read acme/$winid/ctl)
+set -- $ctl
+size=$(echo $7 | awk -F/ '{print $5}')
+size=${size%a}
+newsize=$((size - nx))
+
+newfont=$(echo $7 | sed -e s/$size/$newsize/g)
+
+echo font ${newfont} | 9p write acme/${winid}/ctl
